@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'logo-font';
+  src: url('./assets/fonts/797e433ab948586e-s.p.dbea232f.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-brand-primary: #3B82F6;
+  --color-brand-secondary: #60A5FA;
+  --font-logo-font: "logo-font", sans-serif;
+}
+
+@variant dark (&:where(.dark, .dark *));
