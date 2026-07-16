@@ -35,18 +35,17 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-50 mx-auto w-full select-none transition-all duration-300 ${isOpen ? "max-w-none" : "max-w-7xl"
+      className={`fixed inset-x-0 top-0 z-50 w-full select-none transition-all duration-300 ${isOpen
+        ? "bg-white dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800"
+        : scrolled
+          ? "bg-white/80 dark:bg-neutral-900/80 border-b border-neutral-100 dark:border-white/10 backdrop-blur-md"
+          : "bg-transparent border-b border-transparent"
         }`}
       style={{ transform: "none" }}
     >
       {/* Header wrapper */}
       <div
-        className={`flex h-14 items-center justify-between px-4 transition-all duration-300 sm:h-16 md:px-8 ${isOpen
-          ? "bg-white dark:bg-neutral-900 border-b border-neutral-100 dark:border-neutral-800 shadow-none mt-0 rounded-none"
-          : scrolled
-            ? "bg-white/80 dark:bg-neutral-900/80 border-b border-neutral-200/50 dark:border-neutral-800/50 shadow-sm mt-0 rounded-none backdrop-blur-md"
-            : "bg-transparent shadow-none border-transparent mt-0 rounded-none"
-          }`}
+        className="mx-auto max-w-7xl flex h-14 items-center justify-between px-4 sm:h-16 md:px-8"
         data-scrolled={scrolled ? "true" : "false"}
       >
         {/* Logo Section */}
@@ -76,9 +75,6 @@ const Navbar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden items-center gap-3 lg:flex lg:gap-4">
-          <Button variant="text" href="/login">
-            Login
-          </Button>
           <Button variant="primary">
             Try for free
           </Button>
@@ -125,16 +121,8 @@ const Navbar = () => {
             <div className="mb-6 h-px w-full bg-gradient-to-r from-transparent via-neutral-200 to-transparent dark:via-neutral-800"></div>
 
             <Button
-              variant="secondary"
-              href="/login"
-              className="w-full text-center py-3.5 text-base font-medium rounded-xl"
-              onClick={() => setIsOpen(false)}
-            >
-              Login
-            </Button>
-            <Button
               variant="primary"
-              className="mt-3 w-full rounded-xl py-3.5 text-base font-medium"
+              className="w-full rounded-xl py-3.5 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
               Try for free
