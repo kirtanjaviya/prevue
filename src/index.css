@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
 
 @font-face {
   font-family: 'logo-font';
@@ -9,9 +10,12 @@
 }
 
 @theme {
-  --color-brand-primary: #3B82F6;
-  --color-brand-secondary: #60A5FA;
+  --color-brand-primary: #059669;
+  /* Emerald 600 */
+  --color-brand-secondary: #34D399;
+  /* Emerald 400 */
   --font-logo-font: "logo-font", sans-serif;
+  --font-manrope: "Manrope", sans-serif;
 }
 
 @variant dark (&:where(.dark, .dark *));

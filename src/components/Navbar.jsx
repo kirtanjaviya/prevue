@@ -1,11 +1,31 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import logo from "../assets/logo.png";
 import Button from "./Button";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") || "light";
+    }
+    return "light";
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +95,18 @@ const Navbar = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden items-center gap-3 lg:flex lg:gap-4">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="size-5 text-amber-500" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </button>
+
           <Button variant="primary">
             Try for free
           </Button>
@@ -117,8 +149,26 @@ const Navbar = () => {
           </div>
 
           {/* Action buttons inside drawer */}
-          <div className="mt-auto pt-6">
-            <div className="mb-6 h-px w-full bg-gradient-to-r from-transparent via-neutral-200 to-transparent dark:via-neutral-800"></div>
+          <div className="mt-auto pt-6 flex flex-col gap-4">
+            <div className="mb-2 h-px w-full bg-gradient-to-r from-transparent via-neutral-200 to-transparent dark:via-neutral-800"></div>
+
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-between w-full rounded-xl px-4 py-3 text-base font-medium text-neutral-900 dark:text-white transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
+            >
+              <span>Theme</span>
+              {theme === "dark" ? (
+                <div className="flex items-center gap-2 text-amber-500">
+                  <Sun className="size-5" />
+                  <span>Light Mode</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400">
+                  <Moon className="size-5" />
+                  <span>Dark Mode</span>
+                </div>
+              )}
+            </button>
 
             <Button
               variant="primary"
