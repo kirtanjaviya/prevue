@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 @font-face {
   font-family: 'logo-font';
@@ -9,13 +9,34 @@
   font-display: swap;
 }
 
-@theme {
-  --color-brand-primary: #059669;
-  /* Emerald 600 */
-  --color-brand-secondary: #34D399;
-  /* Emerald 400 */
-  --font-logo-font: "logo-font", sans-serif;
-  --font-manrope: "Manrope", sans-serif;
+@font-face {
+  font-family: 'hero-font';
+  src: url('./assets/fonts/e4af272ccee01ff0-s.p.woff2') format('woff2');
+  font-style: normal;
+  font-display: swap;
 }
 
-@variant dark (&:where(.dark, .dark *));
+@theme {
+  --color-brand-primary: #059669;
+  --color-brand-secondary: #34D399;
+  --font-logo-font: "logo-font", sans-serif;
+  --font-hero-font: "hero-font", "Inter", sans-serif;
+  --font-manrope: "Manrope", "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: "Inter", "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-hero {
+  font-family: 'hero-font', "Inter", sans-serif;
+}
+
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+  background-size: 20px 30px;
+}
