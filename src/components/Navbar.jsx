@@ -53,7 +53,7 @@ const Navbar = () => {
           <img
             src={logoLight}
             alt="Prevue"
-            className="h-8 sm:h-9 w-auto object-contain"
+            className="h-6 sm:h-7 md:h-8 w-auto object-contain"
           />
         </a>
 
@@ -63,7 +63,7 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+              className="text-sm font-medium text-neutral-600 transition-colors hover:text-brand-primary"
             >
               {link.name}
             </a>
@@ -74,7 +74,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
           <div className="hidden lg:block">
             <Button variant="primary">
-              Try for free
+              Get Started
             </Button>
           </div>
 
@@ -108,7 +108,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-900 transition-colors hover:bg-neutral-100 block"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-900 transition-colors hover:bg-emerald-50/50 hover:text-brand-primary block"
               >
                 {link.name}
               </a>
@@ -124,7 +124,7 @@ const Navbar = () => {
               className="w-full rounded-xl py-3.5 text-base font-medium"
               onClick={() => setIsOpen(false)}
             >
-              Try for free
+              Get Started
             </Button>
           </div>
         </div>

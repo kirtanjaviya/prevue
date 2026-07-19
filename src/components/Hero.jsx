@@ -23,8 +23,8 @@ const TypewriterEffectSmooth = ({
   let currentCharCount = 0;
 
   return (
-    <div className={`flex items-center justify-center my-4 min-h-[4rem] sm:min-h-[5rem] md:min-h-[5.5rem] ${className}`}>
-      <div className="flex flex-nowrap justify-center items-center gap-x-2 sm:gap-x-3.5 whitespace-nowrap text-center max-w-full">
+    <div className={`flex items-center justify-center my-2 sm:my-4 min-h-[3.25rem] sm:min-h-[4.5rem] md:min-h-[5.5rem] ${className}`}>
+      <div className="flex flex-wrap justify-center items-center gap-x-1.5 sm:gap-x-3.5 gap-y-1 text-center max-w-full">
         {words.map((word, wordIdx) => {
           const wordStart = currentCharCount;
           const wordLength = word.text.length;
@@ -44,15 +44,15 @@ const TypewriterEffectSmooth = ({
             return (
               <span
                 key={`word-${wordIdx}`}
-                className="relative inline-flex items-center px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-sm bg-[#f4f4f6] border border-neutral-300 mx-1 select-none"
+                className="relative inline-flex items-center px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-sm bg-[#f4f4f6] border border-neutral-300 mx-0.5 sm:mx-1 select-none"
               >
                 {/* 4 Corner Selection Handles / Dots */}
-                <span className="absolute -top-[4px] -left-[4px] w-2 h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
-                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
-                <span className="absolute -bottom-[4px] -left-[4px] w-2 h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
-                <span className="absolute -bottom-[4px] -right-[4px] w-2 h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
+                <span className="absolute -top-[3px] -left-[3px] sm:-top-[4px] sm:-left-[4px] w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
+                <span className="absolute -top-[3px] -right-[3px] sm:-top-[4px] sm:-right-[4px] w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
+                <span className="absolute -bottom-[3px] -left-[3px] sm:-bottom-[4px] sm:-left-[4px] w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
+                <span className="absolute -bottom-[3px] -right-[3px] sm:-bottom-[4px] sm:-right-[4px] w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-neutral-400 border border-white shadow-xs" />
 
-                <span className="font-hero text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-neutral-900">
+                <span className="font-hero text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-neutral-900">
                   {visibleText}
                 </span>
               </span>
@@ -62,7 +62,7 @@ const TypewriterEffectSmooth = ({
           return (
             <span
               key={`word-${wordIdx}`}
-              className={`inline-block font-hero text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight ${word.className || "text-neutral-900"
+              className={`inline-block font-hero text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight ${word.className || "text-neutral-900"
                 }`}
             >
               {visibleText}
@@ -70,7 +70,7 @@ const TypewriterEffectSmooth = ({
           );
         })}
         <span
-          className={`inline-block w-[3px] sm:w-[4px] h-7 sm:h-9 md:h-11 bg-emerald-600 ml-1 rounded-full transition-opacity duration-300 ${
+          className={`inline-block w-[3px] sm:w-[4px] h-6 sm:h-8 md:h-11 bg-emerald-600 ml-0.5 sm:ml-1 rounded-full transition-opacity duration-300 ${
             isFinished ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
           } ${cursorClassName}`}
         />
@@ -89,22 +89,22 @@ const Hero = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[75vh] pt-24 pb-16 px-4 text-center max-w-5xl mx-auto">
+    <div className="flex flex-col items-center justify-center min-h-[65vh] sm:min-h-[75vh] pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 text-center max-w-5xl mx-auto">
       {/* Capsule Badge Component */}
       <CapsuleBadge />
 
-      {/* Main typewriter text in single line */}
-      <TypewriterEffectSmooth words={words} className="my-2" />
+      {/* Main typewriter text */}
+      <TypewriterEffectSmooth words={words} className="my-1 sm:my-2" />
 
-      <p className="font-sans text-neutral-500 text-xs sm:text-sm md:text-base max-w-lg mt-3 mb-8 leading-relaxed font-normal tracking-normal">
+      <p className="font-sans text-neutral-500 text-xs sm:text-sm md:text-base max-w-xs sm:max-w-lg mt-2 sm:mt-3 mb-6 sm:mb-8 leading-relaxed font-normal tracking-normal px-2">
         Generate custom Open Graph metadata and inspect social card previews for Twitter, LinkedIn, Facebook, and Discord instantly.
       </p>
 
-      <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 space-x-0 sm:space-x-4">
-        <Button variant="primary" className="w-44 py-3 text-sm font-semibold shadow-md">
+      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-xs sm:max-w-none">
+        <Button variant="primary" className="w-full sm:w-44 py-3 text-sm font-semibold shadow-md">
           Try for free
         </Button>
-        <button className="w-44 h-11 rounded-xl bg-white text-neutral-900 border border-neutral-300 font-semibold text-sm hover:bg-neutral-50 transition-all cursor-pointer">
+        <button className="w-full sm:w-44 h-11 rounded-xl bg-white text-neutral-900 border border-neutral-300 font-semibold text-sm hover:bg-neutral-50 transition-all cursor-pointer">
           View Docs
         </button>
       </div>
