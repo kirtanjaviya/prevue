@@ -7,6 +7,17 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const scrollToSearch = () => {
+    const searchElement = document.getElementById("search-bar");
+    if (searchElement) {
+      searchElement.scrollIntoView({ behavior: "smooth" });
+      const inputElement = searchElement.querySelector("input");
+      if (inputElement) {
+        setTimeout(() => inputElement.focus(), 400);
+      }
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -73,7 +84,7 @@ const Navbar = () => {
         {/* Action Buttons */}
         <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
           <div className="hidden lg:block">
-            <Button variant="primary">
+            <Button variant="primary" onClick={scrollToSearch}>
               Get Started
             </Button>
           </div>
@@ -122,7 +133,10 @@ const Navbar = () => {
             <Button
               variant="primary"
               className="w-full rounded-xl py-3.5 text-base font-medium"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                scrollToSearch();
+              }}
             >
               Get Started
             </Button>

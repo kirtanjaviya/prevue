@@ -88,6 +88,17 @@ const Hero = () => {
     { text: "Looks" },
   ];
 
+  const scrollToSearch = () => {
+    const searchElement = document.getElementById("search-bar");
+    if (searchElement) {
+      searchElement.scrollIntoView({ behavior: "smooth" });
+      const inputElement = searchElement.querySelector("input");
+      if (inputElement) {
+        setTimeout(() => inputElement.focus(), 400);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[65vh] sm:min-h-[75vh] pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 text-center max-w-5xl mx-auto">
       {/* Capsule Badge Component */}
@@ -101,7 +112,11 @@ const Hero = () => {
       </p>
 
       <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto max-w-xs sm:max-w-none">
-        <Button variant="primary" className="w-full sm:w-44 py-3 text-sm font-semibold shadow-md">
+        <Button
+          variant="primary"
+          className="w-full sm:w-44 py-3 text-sm font-semibold shadow-md"
+          onClick={scrollToSearch}
+        >
           Try for free
         </Button>
         <button className="w-full sm:w-44 h-11 rounded-xl bg-white text-neutral-900 border border-neutral-300 font-semibold text-sm hover:bg-neutral-50 transition-all cursor-pointer">
