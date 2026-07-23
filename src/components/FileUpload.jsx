@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { UploadCloud, Image as ImageIcon, X, RefreshCw, AlertCircle } from "lucide-react";
+import { UploadCloud, Image as ImageIcon, X, RefreshCw, AlertCircle, Loader2, Check } from "lucide-react";
+import { uploadImageToImgBB } from "../services/imageUploader";
 
 const FileUpload = ({
   label = "Social Share Image",
@@ -13,10 +14,15 @@ const FileUpload = ({
   const [fileName, setFileName] = useState("");
   const [fileSize, setFileSize] = useState("");
   const [error, setError] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isCdnHosted, setIsCdnHosted] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     setPreview(initialImage);
+    if (initialImage && (initialImage.startsWith("http://") || initialImage.startsWith("https://"))) {
+      setIsCdnHosted(true);
+    }
   }, [initialImage]);
 
   const formatFileSize = (bytes) => {
@@ -27,7 +33,7 @@ const FileUpload = ({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
   };
 
-  const handleFile = (file) => {
+  const handleFile = async (file) => {
     if (!file) return;
 
     // Validate type
@@ -46,11 +52,32 @@ const FileUpload = ({
     setFileName(file.name);
     setFileSize(formatFileSize(file.size));
 
+    // Show immediate local preview for smooth instant UI response
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
+    setIsUploading(true);
+    setIsCdnHosted(false);
 
+    // Notify parent of local selection immediately
     if (onFileSelect) {
       onFileSelect(file, objectUrl);
+    }
+
+    // Upload to ImgBB CDN in background to get permanent public URL
+    try {
+      const cdnData = await uploadImageToImgBB(file);
+      if (cdnData && cdnData.url) {
+        setPreview(cdnData.url);
+        setIsCdnHosted(true);
+        if (onFileSelect) {
+          onFileSelect(file, cdnData.url);
+        }
+      }
+    } catch (uploadErr) {
+      console.warn("CDN upload fallback to local preview:", uploadErr);
+      // Even if CDN fails, local preview stays intact
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -88,6 +115,8 @@ const FileUpload = ({
     setFileName("");
     setFileSize("");
     setError("");
+    setIsUploading(false);
+    setIsCdnHosted(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -119,7 +148,7 @@ const FileUpload = ({
           isDragging
             ? "border-brand-primary bg-emerald-50/60 shadow-[0_0_15px_rgba(5,150,105,0.15)] scale-[1.005]"
             : preview
-            ? "border-neutral-200 bg-neutral-900/95"
+            ? "border-neutral-200 bg-neutral-950"
             : "border-neutral-200 hover:border-brand-primary/60 bg-gradient-to-b from-neutral-50/80 to-white hover:bg-emerald-50/20 shadow-2xs hover:shadow-sm"
         }`}
       >
@@ -139,6 +168,21 @@ const FileUpload = ({
               alt="OG Preview"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
+
+            {/* CDN Hosting Status Badge at top-left */}
+            <div className="absolute top-2 left-2 z-10">
+              {isUploading ? (
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-medium bg-black/75 backdrop-blur-md text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/40 shadow-sm">
+                  <Loader2 className="w-3 h-3 animate-spin text-amber-300" />
+                  <span>Uploading to CDN...</span>
+                </span>
+              ) : isCdnHosted ? (
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-medium bg-black/75 backdrop-blur-md text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/40 shadow-sm">
+                  <Check className="w-3 h-3 text-emerald-400" />
+                  <span>Hosted on ImgBB CDN</span>
+                </span>
+              ) : null}
+            </div>
 
             {/* Hover overlay with action buttons */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">

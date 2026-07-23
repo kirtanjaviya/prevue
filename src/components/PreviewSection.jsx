@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Eye, Globe } from "lucide-react";
 
-// Placeholder image if user hasn't uploaded/extracted one yet
-const DEFAULT_PREVIEW_IMG = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop";
+// Default social card banner asset
+const DEFAULT_PREVIEW_IMG = "/og-image.svg";
 
 // Brand SVG Icons
 const TwitterIcon = ({ className = "w-4 h-4" }) => (

@@ -11,7 +11,7 @@ const DEFAULT_META = {
   title: "Prevue - Social Card Generator & Metadata Inspector",
   description: "Generate custom Open Graph metadata and inspect social card previews for Twitter, LinkedIn, Facebook, and Discord instantly.",
   url: "https://prevue.kirtanjaviya.dev/",
-  imageUrl: null,
+  imageUrl: "/og-image.svg",
 };
 
 const App = () => {
@@ -29,8 +29,13 @@ const App = () => {
     try {
       const data = await extractWebsiteMetaData(targetUrl);
 
+      // Clean up extracted title if API returned just the domain string instead of a real title
+      const domainName = targetUrl.replace(/^https?:\/\//i, "").split("/")[0].replace(/^www\./, "");
+      const isDomainOnlyTitle = data.title && data.title.toLowerCase().trim() === domainName.toLowerCase().trim();
+      const finalTitle = (data.title && !isDomainOnlyTitle) ? data.title : metaData.title;
+
       setMetaData({
-        title: data.title || metaData.title,
+        title: finalTitle,
         description: data.description || metaData.description,
         url: data.url || targetUrl,
         imageUrl: data.imageUrl || metaData.imageUrl,
