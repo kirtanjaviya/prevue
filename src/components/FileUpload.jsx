@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { UploadCloud, Image as ImageIcon, X, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { UploadCloud, Image as ImageIcon, X, RefreshCw, AlertCircle } from "lucide-react";
 
 const FileUpload = ({
   label = "Social Share Image",
@@ -14,6 +14,10 @@ const FileUpload = ({
   const [fileSize, setFileSize] = useState("");
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setPreview(initialImage);
+  }, [initialImage]);
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return "0 Bytes";
@@ -93,7 +97,7 @@ const FileUpload = ({
   };
 
   return (
-    <div className="w-full max-w-[320px] sm:max-w-[360px] font-sans select-none">
+    <div className="w-full max-w-full font-sans select-none">
       {/* Header section */}
       <div className="flex items-center justify-between mb-1.5 px-0.5">
         <div className="flex items-center gap-1.5">
@@ -135,13 +139,6 @@ const FileUpload = ({
               alt="OG Preview"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            {/* Top right badges */}
-            <div className="absolute top-2 right-2 flex items-center gap-1.5 z-10">
-              <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-black/60 backdrop-blur-md text-white px-2 py-1 rounded-full border border-white/20">
-                <CheckCircle2 className="w-3 h-3 text-brand-secondary" />
-                <span>Uploaded</span>
-              </span>
-            </div>
 
             {/* Hover overlay with action buttons */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
@@ -152,7 +149,7 @@ const FileUpload = ({
                 <button
                   type="button"
                   onClick={handleRemove}
-                  className="p-1.5 rounded-full bg-red-500/80 hover:bg-red-600 text-white backdrop-blur-md transition-all transform hover:scale-110 shadow-md"
+                  className="p-1.5 rounded-full bg-red-500/80 hover:bg-red-600 text-white backdrop-blur-md transition-all transform hover:scale-110 shadow-md cursor-pointer"
                   title="Remove image"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -161,7 +158,7 @@ const FileUpload = ({
 
               <div className="flex items-center justify-between text-white">
                 <div className="min-w-0 pr-2">
-                  <p className="text-xs font-semibold truncate text-white">{fileName || "Custom Image"}</p>
+                  <p className="text-xs font-semibold truncate text-white">{fileName || "OG Share Banner"}</p>
                   {fileSize && <p className="text-[10px] text-white/70">{fileSize}</p>}
                 </div>
                 <button
@@ -170,7 +167,7 @@ const FileUpload = ({
                     e.stopPropagation();
                     fileInputRef.current?.click();
                   }}
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white text-[11px] font-semibold backdrop-blur-md transition-all shrink-0 border border-white/20 shadow-sm"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white text-[11px] font-semibold backdrop-blur-md transition-all shrink-0 border border-white/20 shadow-sm cursor-pointer"
                 >
                   <RefreshCw className="w-3 h-3" />
                   <span>Replace</span>
@@ -181,7 +178,6 @@ const FileUpload = ({
         ) : (
           /* Empty Dropzone View */
           <div className="aspect-[1200/628] w-full flex flex-col items-center justify-center p-4 text-center">
-            {/* Animated Icon Circle */}
             <div
               className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 mb-2 ${
                 isDragging
@@ -192,7 +188,6 @@ const FileUpload = ({
               <UploadCloud className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
             </div>
 
-            {/* Dropzone Headline */}
             <p className="text-xs sm:text-sm font-semibold text-neutral-800 mb-0.5">
               {isDragging ? (
                 <span className="text-brand-primary">Drop image here</span>
@@ -206,9 +201,8 @@ const FileUpload = ({
               )}
             </p>
 
-            {/* Subtext */}
             <p className="text-[10px] text-neutral-400 font-medium">
-              PNG, JPG, WebP (max {maxSizeMB}MB)
+              PNG, JPG, WebP, SVG (max {maxSizeMB}MB)
             </p>
           </div>
         )}

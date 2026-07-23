@@ -13,7 +13,7 @@ const Button = ({
     // Base classes
     const baseClasses = isJourney
         ? "text-white text-center no-underline group text-xl md:text-xl font-bold py-3 sm:py-4 px-8 sm:px-10 rounded-2xl outline-none"
-        : "relative inline-flex cursor-pointer items-center justify-center font-medium transition-all duration-200 active:scale-[0.98] outline-none select-none";
+        : "relative inline-flex cursor-pointer items-center justify-center font-semibold transition-all duration-200 active:scale-[0.98] outline-none select-none";
 
     // Sizes
     const sizeClasses = {
@@ -31,7 +31,7 @@ const Button = ({
         text:
             "text-neutral-600 hover:text-neutral-900 transition-colors",
         slide:
-            "overflow-hidden group hover:bg-linear-to-b hover:from-brand-secondary hover:to-brand-primary text-neutral-700 hover:text-white transition-all duration-300",
+            "overflow-hidden group bg-brand-primary text-white hover:bg-emerald-700 transition-colors duration-300 shadow-xs",
         journey:
             "bg-linear-to-b from-brand-secondary to-brand-primary [text-shadow:0_1px_2px_rgba(0,0,0,0.2)] hover:shadow-[0_0px_40px_5px_rgba(5,150,105,0.45),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-300",
     };
@@ -43,13 +43,13 @@ const Button = ({
     // Render children or animated sliding text structure
     const content = isSlide ? (
         <>
-            <span className="invisible block font-manrope font-light select-none">
+            <span className="invisible block font-sans font-semibold select-none">
                 {children}
             </span>
-            <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out group-hover:-translate-y-full font-manrope font-light">
+            <span className="absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-out group-hover:-translate-y-full font-sans font-semibold text-white">
                 {children}
             </span>
-            <span className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0 text-white font-manrope font-light">
+            <span className="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0 text-white font-sans font-semibold">
                 {children}
             </span>
         </>
