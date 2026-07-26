@@ -1,22 +1,53 @@
 # Prevue
 
-Prevue is an open-source web application for inspecting, previewing, and generating social media meta tags and card previews in real-time.
+> **Instant Social Card Generator, Open Graph Debugger & Meta Tag Inspector**
 
-When you post a link on social platforms like Twitter (X), LinkedIn, Facebook, or Discord, this tool lets you see exactly how the link card will look before publishing. You can scrape meta tags directly from any live URL, tweak titles and descriptions, upload or choose custom social images, and export clean HTML meta tags for your site.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-prevue.kirtanjaviya.dev-059669?style=for-the-badge&logo=googlechrome&logoColor=white)](https://prevue.kirtanjaviya.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+
+Prevue is an open-source web application for inspecting, previewing, and generating social media meta tags and link preview cards in real-time.
+
+When posting links on platforms like Twitter (X), LinkedIn, Facebook, or Discord, Prevue shows exactly how your link cards will render before publishing. Scrape metadata directly from live URLs, customize titles and descriptions, upload custom social images via ImgBB CDN, and export production-ready HTML `<meta>` tags for your website.
+
+**Live Application**: [https://prevue.kirtanjaviya.dev/](https://prevue.kirtanjaviya.dev/)
 
 ---
 
 ## Features
 
-- **URL Scraping**: Paste any web address to extract existing title, description, and Open Graph images using Microlink and fallback proxies.
-- **Multi-Platform Previews**: Side-by-side card rendering for:
-  - Twitter / X (Large Image Cards)
+- **Automated URL Metadata Scraping**: Paste any web address to extract existing titles, descriptions, and Open Graph images using Microlink and fallback proxy parsers.
+- **Multi-Platform Social Previews**: Pixel-perfect real-time card previews for:
+  - Twitter / X (Summary with Large Image)
   - LinkedIn (Feed Summary Cards)
   - Facebook (Social Share Cards)
   - Discord (Rich Embed Cards)
-- **Live Metadata Editor**: Customize title, description, URL, and image with immediate preview updates.
-- **Image Hosting & Scraped Gallery**: Upload local images (hosted via ImgBB CDN) or pick from images scraped from the page.
-- **HTML Tag Exporter**: Generate ready-to-copy HTML `<meta>` tags (Open Graph, Twitter Cards, SEO) for insertion into your site's `<head>`.
+- **Live Metadata Editor**: Edit title, description, target URL, and social images on the fly with instant visual updates across all card previews.
+- **Image Hosting & Extracted Gallery**: Drag-and-drop local image uploads hosted directly via ImgBB CDN, or pick from images extracted from the scraped site.
+- **1-Click HTML Meta Tag Generator**: Generate formatted `<meta>` tags (Open Graph, Twitter Cards, SEO) ready to copy into your project's `<head>`.
+- **Responsive Design**: Built with React 19, Motion, Lucide icons, and Tailwind CSS v4.
+
+---
+
+## Live Demo
+
+Try the app live in your browser:  
+[https://prevue.kirtanjaviya.dev/](https://prevue.kirtanjaviya.dev/)
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| **[React 19](https://react.dev/)** | UI Framework |
+| **[Vite 8](https://vitejs.dev/)** | Build Tool & Dev Server |
+| **[Tailwind CSS v4](https://tailwindcss.com/)** | Utility-First Styling |
+| **[Motion](https://motion.dev/)** | Animations & Transitions |
+| **[Lucide React](https://lucide.dev/)** | Icons |
+| **[ImgBB API](https://imgbb.com/)** | Image Hosting CDN |
 
 ---
 
@@ -24,10 +55,11 @@ When you post a link on social platforms like Twitter (X), LinkedIn, Facebook, o
 
 ### Prerequisites
 
-- Node.js 18 or higher
+Ensure you have the following installed:
+- Node.js 18.0.0 or higher
 - npm, yarn, pnpm, or bun
 
-### Setup Instructions
+### Installation & Setup
 
 1. Clone the repository:
    ```bash
@@ -40,14 +72,14 @@ When you post a link on social platforms like Twitter (X), LinkedIn, Facebook, o
    npm install
    ```
 
-3. Configure environment variables:
-   Copy the `.env.example` file to `.env.local`:
+3. Environment Setup:
+   Copy `.env.example` to create `.env.local`:
    ```bash
    cp .env.example .env.local
    ```
-   *Note: If you want to use custom image uploads via ImgBB, set your API key in `VITE_IMGBB_API_KEY`. A fallback key is provided by default.*
+   *(Optional)* To use custom image uploads via ImgBB, set your API key in `VITE_IMGBB_API_KEY`. A fallback key is provided for development.
 
-4. Run the local development server:
+4. Start Development Server:
    ```bash
    npm run dev
    ```
@@ -59,55 +91,48 @@ When you post a link on social platforms like Twitter (X), LinkedIn, Facebook, o
 
 ```text
 prevue/
-├── public/                 # Static assets and site manifest
+├── public/                     # Static assets & site manifest
+│   ├── favicon.png
+│   ├── og-image.svg
+│   └── site.webmanifest
 ├── src/
-│   ├── assets/             # SVGs and static brand graphics
-│   ├── components/         # React components
-│   │   ├── FileUpload.jsx           # Drag-and-drop image uploader
-│   │   ├── Hero.jsx                 # Header hero section
-│   │   ├── MetaCodeModal.jsx        # Exportable HTML code modal
-│   │   ├── MetaEditor.jsx           # Metadata input controls
-│   │   ├── Navbar.jsx               # Navigation bar with GitHub link
-│   │   ├── OgSearch.jsx             # URL search bar input
-│   │   ├── PreviewSection.jsx       # Multi-platform social preview cards
-│   │   └── ExtractedImagesGallery.jsx # Scraped image selector
-│   ├── services/           # External API & extraction services
-│   │   ├── imageUploader.js         # ImgBB CDN upload handler
-│   │   └── metaExtractor.js         # URL metadata & proxy parser
-│   ├── App.jsx             # Root layout and state management
-│   ├── index.css           # Tailwind CSS imports & custom styles
-│   └── main.jsx            # Application entry point
-├── .env.example           # Environment template
-├── package.json           # Project dependencies & scripts
-├── vite.config.js         # Vite configuration
-└── README.md              # Project documentation
+│   ├── assets/                 # Brand graphics and logos
+│   ├── components/             # React UI components
+│   │   ├── BackgroundPattern.jsx  # Background styling pattern
+│   │   ├── Button.jsx             # Reusable button component
+│   │   ├── CapsuleBadge.jsx       # Badge component
+│   │   ├── DocsSection.jsx        # FAQ & Documentation section
+│   │   ├── ExtractedImagesGallery.jsx # Scraped image selector
+│   │   ├── Features.jsx           # Feature highlights grid
+│   │   ├── FileUpload.jsx         # Drag-and-drop image uploader
+│   │   ├── Footer.jsx             # App footer
+│   │   ├── Hero.jsx               # Hero section header
+│   │   ├── MetaCodeModal.jsx      # Exportable HTML code modal
+│   │   ├── MetaEditor.jsx         # Metadata input controls
+│   │   ├── Navbar.jsx             # Top navigation bar
+│   │   ├── OgSearch.jsx           # URL extraction search bar
+│   │   └── PreviewSection.jsx     # Multi-platform preview cards
+│   ├── services/               # External service handlers
+│   │   ├── imageUploader.js       # ImgBB CDN image upload handler
+│   │   └── metaExtractor.js       # URL metadata parser & proxy logic
+│   ├── App.jsx                 # Main application layout & state
+│   ├── index.css               # Global styles & Tailwind CSS v4
+│   └── main.jsx                # Application entry point
+├── .env.example                # Environment variables template
+├── index.html                  # Main HTML entry file
+├── package.json                # Project dependencies & scripts
+├── vite.config.js              # Vite configuration
+└── README.md                   # Project documentation
 ```
 
 ---
 
-## Available Scripts
-
-- `npm run dev` - Starts the Vite development server.
-- `npm run build` - Compiles and bundles the application for production in the `dist` directory.
-- `npm run preview` - Runs a local web server to preview the built production app.
-- `npm run lint` - Runs ESLint to check for syntax and code style issues.
-
----
-
-## Tech Stack
-
-- **Framework**: React 19
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS v4
-- **Icons**: Lucide React
-
----
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome. Feel free to submit a Pull Request or open an Issue to report bugs or suggest features.
 
-1. Fork the repo
+1. Fork the project repository
 2. Create your feature branch (`git checkout -b feature/new-feature`)
 3. Commit your changes (`git commit -m 'Add new feature'`)
 4. Push to the branch (`git push origin feature/new-feature`)
@@ -117,4 +142,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Distributed under the [MIT License](LICENSE).
