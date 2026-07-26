@@ -7,6 +7,7 @@ import PreviewSection from "./components/PreviewSection";
 import MetaCodeModal from "./components/MetaCodeModal";
 import Features from "./components/Features";
 import DocsSection from "./components/DocsSection";
+import Footer from "./components/Footer";
 import { extractWebsiteMetaData } from "./services/metaExtractor";
 
 const DEFAULT_META = {
@@ -72,7 +73,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-50/50 relative text-gray-800 pb-24 font-sans">
+    <div className="min-h-screen w-full bg-slate-50/50 relative text-gray-800 font-sans">
       {/* Navigation */}
       <Navbar />
 
@@ -117,6 +118,9 @@ const App = () => {
 
       {/* Documentation Section */}
       <DocsSection />
+
+      {/* Footer Section */}
+      <Footer />
 
       {/* HTML Meta Code Generator Modal */}
       <MetaCodeModal
