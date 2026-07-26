@@ -5,13 +5,15 @@ import OgSearch from "./components/OgSearch";
 import MetaEditor from "./components/MetaEditor";
 import PreviewSection from "./components/PreviewSection";
 import MetaCodeModal from "./components/MetaCodeModal";
+import Features from "./components/Features";
+import DocsSection from "./components/DocsSection";
 import { extractWebsiteMetaData } from "./services/metaExtractor";
 
 const DEFAULT_META = {
   title: "Prevue - Social Card Generator & Metadata Inspector",
   description: "Generate custom Open Graph metadata and inspect social card previews for Twitter, LinkedIn, Facebook, and Discord instantly.",
   url: "https://prevue.kirtanjaviya.dev/",
-  imageUrl: "/og-image.svg",
+  imageUrl: "",
 };
 
 const App = () => {
@@ -19,12 +21,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [extractionError, setExtractionError] = useState("");
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [noImageWarning, setNoImageWarning] = useState(false);
 
   const handleSearch = async (targetUrl) => {
     if (!targetUrl) return;
 
     setIsLoading(true);
     setExtractionError("");
+    setNoImageWarning(false);
 
     try {
       const data = await extractWebsiteMetaData(targetUrl);
@@ -34,11 +38,15 @@ const App = () => {
       const isDomainOnlyTitle = data.title && data.title.toLowerCase().trim() === domainName.toLowerCase().trim();
       const finalTitle = (data.title && !isDomainOnlyTitle) ? data.title : metaData.title;
 
+      if (!data.imageUrl) {
+        setNoImageWarning(true);
+      }
+
       setMetaData({
         title: finalTitle,
-        description: data.description || metaData.description,
+        description: data.description || "",
         url: data.url || targetUrl,
-        imageUrl: data.imageUrl || metaData.imageUrl,
+        imageUrl: data.imageUrl || "",
       });
     } catch (err) {
       console.error("Metadata extraction error:", err);
@@ -56,6 +64,7 @@ const App = () => {
   };
 
   const handleImageSelect = (file, objectUrlOrString) => {
+    setNoImageWarning(false);
     setMetaData((prev) => ({
       ...prev,
       imageUrl: objectUrlOrString,
@@ -81,7 +90,7 @@ const App = () => {
       />
 
       {/* 2-Column Main Workspace Section */}
-      <section className="mt-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+      <section className="mt-10 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* LEFT SIDE: META Editor Box */}
@@ -91,6 +100,7 @@ const App = () => {
               onChange={setMetaData}
               onImageSelect={handleImageSelect}
               onOpenExportModal={() => setIsExportModalOpen(true)}
+              noImageWarning={noImageWarning}
             />
           </div>
 
@@ -101,6 +111,12 @@ const App = () => {
 
         </div>
       </section>
+
+      {/* Features Section */}
+      <Features />
+
+      {/* Documentation Section */}
+      <DocsSection />
 
       {/* HTML Meta Code Generator Modal */}
       <MetaCodeModal

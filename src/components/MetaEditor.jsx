@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import FileUpload from "./FileUpload";
 import Button from "./Button";
-import { Type, AlignLeft, Code } from "lucide-react";
+import { Type, AlignLeft, Code, AlertTriangle } from "lucide-react";
 
 /**
  * Returns SEO status for Title
@@ -80,6 +80,7 @@ const MetaEditor = ({
   onChange,
   onImageSelect,
   onOpenExportModal,
+  noImageWarning
 }) => {
   const { title = "", description = "", imageUrl = null } = metaData;
 
@@ -109,6 +110,14 @@ const MetaEditor = ({
                 }
               }}
             />
+            {noImageWarning && (
+              <div className="mt-3 flex items-start gap-2 p-3 bg-amber-50 border border-amber-200/60 rounded-xl shadow-xs animate-in fade-in slide-in-from-top-2 duration-300">
+                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-amber-800 leading-snug">
+                  No Open Graph image was found on this website. Please upload a fallback image above.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* 2. Title Section with SEO Indicator & Tooltip */}

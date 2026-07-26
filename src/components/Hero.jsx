@@ -70,9 +70,8 @@ const TypewriterEffectSmooth = ({
           );
         })}
         <span
-          className={`inline-block w-[3px] sm:w-[4px] h-6 sm:h-8 md:h-11 bg-emerald-600 ml-0.5 sm:ml-1 rounded-full transition-opacity duration-300 ${
-            isFinished ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
-          } ${cursorClassName}`}
+          className={`inline-block w-[3px] sm:w-[4px] h-6 sm:h-8 md:h-11 bg-emerald-600 ml-0.5 sm:ml-1 rounded-full transition-opacity duration-300 ${isFinished ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
+            } ${cursorClassName}`}
         />
       </div>
     </div>
@@ -119,9 +118,9 @@ const Hero = () => {
         >
           Try for free
         </Button>
-        <button className="w-full sm:w-44 h-11 rounded-xl bg-white text-neutral-900 border border-neutral-300 font-semibold text-sm hover:bg-neutral-50 transition-all cursor-pointer">
+        <a href="#docs" className="flex items-center justify-center w-full sm:w-44 h-11 rounded-xl bg-white text-neutral-900 border border-neutral-300 font-semibold text-sm hover:bg-neutral-50 transition-all cursor-pointer">
           View Docs
-        </button>
+        </a>
       </div>
     </div>
   );

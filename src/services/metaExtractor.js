@@ -96,21 +96,29 @@ export const extractWebsiteMetaData = async (targetUrl) => {
 
   // Strategy 2: CORS Proxy HTML Scraper fallback if missing fields
   if (!extractedData.title || !extractedData.description || !extractedData.imageUrl) {
-    try {
-      const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(normalizedUrl)}`;
-      const proxyRes = await fetch(corsProxyUrl, { signal: AbortSignal.timeout(7000) });
+    const proxyUrls = [
+      `https://corsproxy.io/?${encodeURIComponent(normalizedUrl)}`,
+      `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(normalizedUrl)}`
+    ];
 
-      if (proxyRes.ok) {
-        const data = await proxyRes.json();
-        if (data.contents) {
-          const parsed = parseHtmlMetadata(data.contents, normalizedUrl);
-          if (!extractedData.title && parsed.title) extractedData.title = parsed.title;
-          if (!extractedData.description && parsed.description) extractedData.description = parsed.description;
-          if (!extractedData.imageUrl && parsed.imageUrl) extractedData.imageUrl = parsed.imageUrl;
+    for (const proxyUrl of proxyUrls) {
+      // Stop if we have all data
+      if (extractedData.title && extractedData.description && extractedData.imageUrl) break;
+
+      try {
+        const proxyRes = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
+        if (proxyRes.ok) {
+          const htmlText = await proxyRes.text();
+          if (htmlText) {
+            const parsed = parseHtmlMetadata(htmlText, normalizedUrl);
+            if (!extractedData.title && parsed.title) extractedData.title = parsed.title;
+            if (!extractedData.description && parsed.description) extractedData.description = parsed.description;
+            if (!extractedData.imageUrl && parsed.imageUrl) extractedData.imageUrl = parsed.imageUrl;
+          }
         }
+      } catch (err) {
+        console.warn(`Proxy extraction warning for ${proxyUrl}:`, err);
       }
-    } catch (err) {
-      console.warn("CORS Proxy extraction warning:", err);
     }
   }
 

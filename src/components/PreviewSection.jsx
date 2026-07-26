@@ -67,7 +67,7 @@ const PreviewSection = ({ metaData }) => {
 
   const domain = extractDomain(url);
   const displayImage = imageUrl || DEFAULT_PREVIEW_IMG;
-  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+  const faviconUrl = `https://icon.horse/icon/${domain}`;
 
   const tabs = [
     { id: "all", label: "All Previews", icon: Eye, activeColor: "text-brand-primary" },
@@ -109,7 +109,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 1. TWITTER / X PREVIEW */}
         {(activeTab === "all" || activeTab === "twitter") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[500px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <TwitterIcon className="w-3.5 h-3.5 text-neutral-900" />
@@ -117,9 +117,10 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[500px] bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+            <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
               <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden relative group">
                 <img
+                  key={displayImage}
                   src={displayImage}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -143,7 +144,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 2. LINKEDIN PREVIEW */}
         {(activeTab === "all" || activeTab === "linkedin") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[500px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <LinkedinIcon className="w-3.5 h-3.5 text-[#0a66c2]" />
@@ -151,9 +152,10 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[500px] bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+            <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
               <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
                 <img
+                  key={displayImage}
                   src={displayImage}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -174,7 +176,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 3. FACEBOOK PREVIEW */}
         {(activeTab === "all" || activeTab === "facebook") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[500px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <FacebookIcon className="w-3.5 h-3.5 text-[#1877f2]" />
@@ -182,9 +184,10 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[500px] bg-white border border-neutral-200/80 rounded-none sm:rounded-md overflow-hidden shadow-xs">
+            <div className="bg-white border border-neutral-200/80 rounded-none sm:rounded-md overflow-hidden shadow-xs">
               <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
                 <img
+                  key={displayImage}
                   src={displayImage}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -207,7 +210,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 4. DISCORD PREVIEW */}
         {(activeTab === "all" || activeTab === "discord") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[500px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <DiscordIcon className="w-3.5 h-3.5 text-[#5865F2]" />
@@ -215,7 +218,7 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[500px] bg-[#313338] text-white p-3.5 rounded-lg border-l-4 border-emerald-500 shadow-sm font-sans">
+            <div className="bg-[#313338] text-white p-3.5 rounded-lg border-l-4 border-emerald-500 shadow-sm font-sans">
               <p className="text-[11px] text-[#b5bac1] font-semibold mb-1">
                 {domain}
               </p>
@@ -231,6 +234,7 @@ const PreviewSection = ({ metaData }) => {
               </p>
               <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-900">
                 <img
+                  key={displayImage}
                   src={displayImage}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -242,7 +246,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 5. SLACK PREVIEW */}
         {(activeTab === "all" || activeTab === "slack") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[500px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <SlackIcon className="w-3.5 h-3.5 text-[#E01E5A]" />
@@ -250,7 +254,7 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[500px] bg-white border-l-4 border-l-[#e8e8e8] pl-3 py-1 font-sans">
+            <div className="bg-white border-l-4 border-l-[#e8e8e8] pl-3 py-1 font-sans">
               <div className="flex items-center gap-1.5 mb-1">
                 <img
                   src={faviconUrl}
@@ -272,6 +276,7 @@ const PreviewSection = ({ metaData }) => {
               </p>
               <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
                 <img
+                  key={displayImage}
                   src={displayImage}
                   alt={title}
                   className="w-full h-full object-cover"
@@ -283,7 +288,7 @@ const PreviewSection = ({ metaData }) => {
 
         {/* 6. GOOGLE SEARCH PREVIEW */}
         {(activeTab === "all" || activeTab === "google") && (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full max-w-[580px] mx-auto">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
                 <GoogleIcon className="w-3.5 h-3.5" />
@@ -291,7 +296,7 @@ const PreviewSection = ({ metaData }) => {
               </span>
             </div>
 
-            <div className="max-w-[580px] bg-white border border-neutral-200 p-4 rounded-xl shadow-xs font-sans">
+            <div className="bg-white border border-neutral-200 p-4 rounded-xl shadow-xs font-sans">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center border border-neutral-200 overflow-hidden shrink-0">
                   <img

@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Loader2 } from "lucide-react";
 
 const OgSearch = ({ onSearch, onUrlChange, isLoading = false, externalError = "" }) => {
   const [query, setQuery] = useState("https://prevue.kirtanjaviya.dev/");
   const [localError, setLocalError] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (onUrlChange) {
+        onUrlChange(query);
+      }
+    }, 600);
+
+    return () => clearTimeout(handler);
+  }, [query, onUrlChange]);
 
   const normalizeUrl = (input) => {
     let trimmed = input.trim();
@@ -31,9 +41,6 @@ const OgSearch = ({ onSearch, onUrlChange, isLoading = false, externalError = ""
     if (formattedUrl) {
       setLocalError("");
       setQuery(formattedUrl);
-      if (onUrlChange) {
-        onUrlChange(formattedUrl);
-      }
       if (onSearch) {
         onSearch(formattedUrl);
       }
@@ -52,10 +59,6 @@ const OgSearch = ({ onSearch, onUrlChange, isLoading = false, externalError = ""
     setQuery(val);
     if (localError) {
       setLocalError("");
-    }
-    // Live update preview domain as user types in the URL input box
-    if (onUrlChange) {
-      onUrlChange(val);
     }
   };
 

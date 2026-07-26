@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&display=swap');
-
 @font-face {
   font-family: 'logo-font';
   src: url('./assets/fonts/797e433ab948586e-s.p.dbea232f.woff2') format('woff2');
@@ -25,6 +23,10 @@
   --font-sans: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Inter", "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,7 +39,7 @@ body {
 
 .bg-grid-pattern {
   background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
   background-size: 20px 30px;
 }
 
@@ -45,6 +47,7 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

@@ -54,9 +54,8 @@ const Navbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { name: "Features", href: "#" },
-    { name: "How it works", href: "#" },
-    { name: "Docs", href: "#" },
+    { name: "Features", href: "#features" },
+    { name: "Docs", href: "#docs" },
   ];
 
   return (

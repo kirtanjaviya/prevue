@@ -164,6 +164,7 @@ const FileUpload = ({
           /* Uploaded Preview View */
           <div className="relative aspect-[1200/628] w-full overflow-hidden flex items-center justify-center bg-neutral-950">
             <img
+              key={preview}
               src={preview}
               alt="OG Preview"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
