@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Eye, Globe } from "lucide-react";
 
-// Default social card banner asset
 const DEFAULT_PREVIEW_IMG = "/og-image.svg";
 
-// Brand SVG Icons
 const TwitterIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -44,6 +42,23 @@ const GoogleIcon = ({ className = "w-4 h-4" }) => (
   </svg>
 );
 
+const FaviconImage = ({ domain, className = "w-4 h-4" }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError || !domain) {
+    return <Globe className={`${className} text-neutral-500 shrink-0`} />;
+  }
+
+  return (
+    <img
+      src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+      alt={domain}
+      className={`${className} object-contain rounded-xs shrink-0`}
+      onError={() => setHasError(true)}
+    />
+  );
+};
+
 const extractDomain = (rawUrl = "") => {
   if (!rawUrl) return "prevue.kirtanjaviya.dev";
   try {
@@ -56,8 +71,6 @@ const extractDomain = (rawUrl = "") => {
 };
 
 const PreviewSection = ({ metaData }) => {
-  const [activeTab, setActiveTab] = useState("all");
-
   const {
     title = "Prevue - Social Card Generator & Metadata Inspector",
     description = "Generate custom Open Graph metadata and inspect social card previews for Twitter, LinkedIn, Facebook, and Discord instantly.",
@@ -67,271 +80,212 @@ const PreviewSection = ({ metaData }) => {
 
   const domain = extractDomain(url);
   const displayImage = imageUrl || DEFAULT_PREVIEW_IMG;
-  const faviconUrl = `https://icon.horse/icon/${domain}`;
-
-  const tabs = [
-    { id: "all", label: "All Previews", icon: Eye, activeColor: "text-brand-primary" },
-    { id: "twitter", label: "Twitter / X", icon: TwitterIcon, activeColor: "text-neutral-900" },
-    { id: "linkedin", label: "LinkedIn", icon: LinkedinIcon, activeColor: "text-[#0a66c2]" },
-    { id: "facebook", label: "Facebook", icon: FacebookIcon, activeColor: "text-[#1877f2]" },
-    { id: "discord", label: "Discord", icon: DiscordIcon, activeColor: "text-[#5865F2]" },
-    { id: "slack", label: "Slack", icon: SlackIcon, activeColor: "text-[#E01E5A]" },
-    { id: "google", label: "Google Search", icon: GoogleIcon, activeColor: "" },
-  ];
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-neutral-200/90 shadow-sm overflow-hidden flex flex-col font-sans lg:h-[560px]">
-      {/* Tabs Bar */}
-      <div className="p-3 bg-neutral-50/70 border-b border-neutral-200/70 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer border ${
-                isActive
-                  ? "bg-white text-neutral-900 shadow-xs border-neutral-200/80"
-                  : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100/80 border-transparent"
-              }`}
-            >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? tab.activeColor : "text-neutral-400"}`} />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
+    <div className="w-full flex flex-col font-sans">
+      <h2 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">
+        PREVIEW
+      </h2>
 
-      {/* Previews Display Area (Scrollable without visible scrollbars) */}
-      <div className="p-5 sm:p-6 space-y-8 flex-1 min-h-0 overflow-y-auto bg-neutral-50/40 no-scrollbar">
+      <div className="space-y-8">
 
-        {/* 1. TWITTER / X PREVIEW */}
-        {(activeTab === "all" || activeTab === "twitter") && (
-          <div className="space-y-2 w-full max-w-[500px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <TwitterIcon className="w-3.5 h-3.5 text-neutral-900" />
-                Twitter / X
-              </span>
-            </div>
+        {/* Google Search */}
+        <div className="space-y-2 w-full max-w-[580px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <GoogleIcon className="w-3.5 h-3.5" />
+              Google Search
+            </span>
+          </div>
 
-            <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
-              <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden relative group">
-                <img
-                  key={displayImage}
-                  src={displayImage}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
+          <div className="bg-white border border-neutral-200 p-4 rounded-xl shadow-xs font-sans">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center border border-neutral-200 overflow-hidden shrink-0">
+                <FaviconImage domain={domain} className="w-3.5 h-3.5" />
               </div>
-
-              <div className="p-3.5 bg-white">
-                <p className="text-[12px] text-neutral-500 font-normal truncate mb-0.5">
+              <div className="min-w-0">
+                <p className="text-xs text-[#202124] font-normal truncate">
                   {domain}
                 </p>
-                <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1 leading-snug">
-                  {title || "Untitled Card"}
-                </h3>
-                <p className="text-xs text-neutral-500 line-clamp-2 mt-1 leading-relaxed font-normal">
-                  {description || "No description provided."}
+                <p className="text-[11px] text-[#4d5156] font-normal truncate leading-none">
+                  {url}
                 </p>
               </div>
             </div>
+
+            <h3 className="text-base font-normal text-[#1a0dab] hover:underline cursor-pointer line-clamp-1 mb-1">
+              {title || "Untitled Search Result"}
+            </h3>
+
+            <p className="text-xs text-[#4d5156] leading-normal line-clamp-2 font-normal">
+              {description || "No description specified for search engines."}
+            </p>
           </div>
-        )}
+        </div>
 
-        {/* 2. LINKEDIN PREVIEW */}
-        {(activeTab === "all" || activeTab === "linkedin") && (
-          <div className="space-y-2 w-full max-w-[500px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <LinkedinIcon className="w-3.5 h-3.5 text-[#0a66c2]" />
-                LinkedIn
-              </span>
-            </div>
-
-            <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
-              <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
-                <img
-                  key={displayImage}
-                  src={displayImage}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="p-3 bg-[#f8f9fa] border-t border-neutral-100">
-                <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1">
-                  {title || "Untitled Title"}
-                </h3>
-                <p className="text-[11px] text-neutral-500 font-normal truncate mt-0.5">
-                  {domain}
-                </p>
-              </div>
-            </div>
+        {/* Twitter / X */}
+        <div className="space-y-2 w-full max-w-[500px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <TwitterIcon className="w-3.5 h-3.5 text-neutral-900" />
+              X (Formerly Twitter)
+            </span>
           </div>
-        )}
 
-        {/* 3. FACEBOOK PREVIEW */}
-        {(activeTab === "all" || activeTab === "facebook") && (
-          <div className="space-y-2 w-full max-w-[500px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <FacebookIcon className="w-3.5 h-3.5 text-[#1877f2]" />
-                Facebook
-              </span>
+          <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+            <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden relative group">
+              <img
+                key={displayImage}
+                src={displayImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            <div className="bg-white border border-neutral-200/80 rounded-none sm:rounded-md overflow-hidden shadow-xs">
-              <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
-                <img
-                  key={displayImage}
-                  src={displayImage}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-3 bg-[#f2f3f5] border-t border-neutral-200">
-                <p className="text-[11px] text-neutral-500 uppercase tracking-wider truncate mb-0.5">
-                  {domain}
-                </p>
-                <h3 className="text-sm font-bold text-neutral-900 line-clamp-1 leading-snug">
-                  {title || "Untitled Card"}
-                </h3>
-                <p className="text-xs text-neutral-600 line-clamp-2 mt-0.5 leading-snug">
-                  {description || "No description provided."}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 4. DISCORD PREVIEW */}
-        {(activeTab === "all" || activeTab === "discord") && (
-          <div className="space-y-2 w-full max-w-[500px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <DiscordIcon className="w-3.5 h-3.5 text-[#5865F2]" />
-                Discord
-              </span>
-            </div>
-
-            <div className="bg-[#313338] text-white p-3.5 rounded-lg border-l-4 border-emerald-500 shadow-sm font-sans">
-              <p className="text-[11px] text-[#b5bac1] font-semibold mb-1">
+            <div className="p-3.5 bg-white">
+              <p className="text-[12px] text-neutral-500 font-normal truncate mb-0.5">
                 {domain}
               </p>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="text-sm font-semibold text-[#00a8fc] hover:underline line-clamp-1 inline-block mb-1.5"
-              >
-                {title || "Untitled Embed"}
-              </a>
-              <p className="text-xs text-[#dbdee1] leading-relaxed line-clamp-3 mb-3 font-normal">
-                {description || "No description provided."}
-              </p>
-              <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-900">
-                <img
-                  key={displayImage}
-                  src={displayImage}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 5. SLACK PREVIEW */}
-        {(activeTab === "all" || activeTab === "slack") && (
-          <div className="space-y-2 w-full max-w-[500px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <SlackIcon className="w-3.5 h-3.5 text-[#E01E5A]" />
-                Slack
-              </span>
-            </div>
-
-            <div className="bg-white border-l-4 border-l-[#e8e8e8] pl-3 py-1 font-sans">
-              <div className="flex items-center gap-1.5 mb-1">
-                <img
-                  src={faviconUrl}
-                  alt={domain}
-                  className="w-4 h-4 object-contain rounded-xs"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-                <span className="text-xs font-bold text-[#1d1c1d]">{domain}</span>
-              </div>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="text-sm font-bold text-[#1264a3] hover:underline line-clamp-1 mb-1 block"
-              >
-                {title || "Untitled Attachment"}
-              </a>
-              <p className="text-xs text-[#616061] line-clamp-2 mb-2.5 font-normal leading-relaxed">
-                {description || "No description provided."}
-              </p>
-              <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
-                <img
-                  key={displayImage}
-                  src={displayImage}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 6. GOOGLE SEARCH PREVIEW */}
-        {(activeTab === "all" || activeTab === "google") && (
-          <div className="space-y-2 w-full max-w-[580px] mx-auto">
-            <div className="flex items-center justify-between px-1">
-              <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
-                <GoogleIcon className="w-3.5 h-3.5" />
-                Google Search
-              </span>
-            </div>
-
-            <div className="bg-white border border-neutral-200 p-4 rounded-xl shadow-xs font-sans">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center border border-neutral-200 overflow-hidden shrink-0">
-                  <img
-                    src={faviconUrl}
-                    alt={domain}
-                    className="w-4 h-4 object-contain"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                      if (e.currentTarget.nextElementSibling) {
-                        e.currentTarget.nextElementSibling.classList.remove("hidden");
-                      }
-                    }}
-                  />
-                  <Globe className="w-3.5 h-3.5 text-neutral-600 hidden" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-[#202124] font-normal truncate">
-                    {domain}
-                  </p>
-                  <p className="text-[11px] text-[#4d5156] font-normal truncate leading-none">
-                    {url}
-                  </p>
-                </div>
-              </div>
-
-              <h3 className="text-base font-normal text-[#1a0dab] hover:underline cursor-pointer line-clamp-1 mb-1">
-                {title || "Untitled Search Result"}
+              <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1 leading-snug">
+                {title || "Untitled Card"}
               </h3>
-
-              <p className="text-xs text-[#4d5156] leading-normal line-clamp-2 font-normal">
-                {description || "No description specified for search engines."}
+              <p className="text-xs text-neutral-500 line-clamp-2 mt-1 leading-relaxed font-normal">
+                {description || "No description provided."}
               </p>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Facebook */}
+        <div className="space-y-2 w-full max-w-[500px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <FacebookIcon className="w-3.5 h-3.5 text-[#1877f2]" />
+              Facebook
+            </span>
+          </div>
+
+          <div className="bg-white border border-neutral-200/80 rounded-none sm:rounded-md overflow-hidden shadow-xs">
+            <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
+              <img
+                key={displayImage}
+                src={displayImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-3 bg-[#f2f3f5] border-t border-neutral-200">
+              <p className="text-[11px] text-neutral-500 uppercase tracking-wider truncate mb-0.5">
+                {domain}
+              </p>
+              <h3 className="text-sm font-bold text-neutral-900 line-clamp-1 leading-snug">
+                {title || "Untitled Card"}
+              </h3>
+              <p className="text-xs text-neutral-600 line-clamp-2 mt-0.5 leading-snug">
+                {description || "No description provided."}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* LinkedIn */}
+        <div className="space-y-2 w-full max-w-[500px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <LinkedinIcon className="w-3.5 h-3.5 text-[#0a66c2]" />
+              LinkedIn
+            </span>
+          </div>
+
+          <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+            <div className="aspect-[1200/628] w-full bg-neutral-100 overflow-hidden">
+              <img
+                key={displayImage}
+                src={displayImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="p-3 bg-[#f8f9fa] border-t border-neutral-100">
+              <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1">
+                {title || "Untitled Title"}
+              </h3>
+              <p className="text-[11px] text-neutral-500 font-normal truncate mt-0.5">
+                {domain}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Discord */}
+        <div className="space-y-2 w-full max-w-[500px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <DiscordIcon className="w-3.5 h-3.5 text-[#5865F2]" />
+              Discord
+            </span>
+          </div>
+
+          <div className="bg-[#313338] text-white p-3.5 rounded-lg border-l-4 border-[#5865F2] shadow-sm font-sans">
+            <p className="text-[11px] text-[#b5bac1] font-semibold mb-1">
+              {domain}
+            </p>
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="text-sm font-semibold text-[#00a8fc] hover:underline line-clamp-1 inline-block mb-1.5"
+            >
+              {title || "Untitled Embed"}
+            </a>
+            <p className="text-xs text-[#dbdee1] leading-relaxed line-clamp-3 mb-3 font-normal">
+              {description || "No description provided."}
+            </p>
+            <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-900">
+              <img
+                key={displayImage}
+                src={displayImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Slack */}
+        <div className="space-y-2 w-full max-w-[500px] mx-auto">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider flex items-center gap-1.5">
+              <SlackIcon className="w-3.5 h-3.5 text-[#E01E5A]" />
+              Slack
+            </span>
+          </div>
+
+          <div className="bg-white border-l-4 border-l-[#e8e8e8] pl-3 py-1 font-sans">
+            <div className="flex items-center gap-1.5 mb-1">
+              <FaviconImage domain={domain} className="w-4 h-4" />
+              <span className="text-xs font-bold text-[#1d1c1d]">{domain}</span>
+            </div>
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="text-sm font-bold text-[#1264a3] hover:underline line-clamp-1 mb-1 block"
+            >
+              {title || "Untitled Attachment"}
+            </a>
+            <p className="text-xs text-[#616061] line-clamp-2 mb-2.5 font-normal leading-relaxed">
+              {description || "No description provided."}
+            </p>
+            <div className="aspect-[1200/628] w-full max-h-[220px] rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200">
+              <img
+                key={displayImage}
+                src={displayImage}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>

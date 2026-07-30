@@ -68,12 +68,10 @@ const Navbar = () => {
         }`}
       style={{ transform: "none" }}
     >
-      {/* Header wrapper */}
       <div
         className="mx-auto max-w-7xl flex h-14 items-center justify-between px-4 sm:h-16 md:px-8"
         data-scrolled={scrolled ? "true" : "false"}
       >
-        {/* Logo Section */}
         <a className="flex items-center cursor-pointer shrink-0" href="/">
           <img
             src={logoLight}
@@ -82,20 +80,18 @@ const Navbar = () => {
           />
         </a>
 
-        {/* Desktop Navigation Links */}
         <div className="hidden items-center gap-6 lg:flex lg:gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-neutral-600 transition-colors hover:text-brand-primary"
+              className="text-sm font-medium text-neutral-600 transition-colors hover:text-black"
             >
               {link.name}
             </a>
           ))}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
           <a
             href="https://github.com/kirtanjaviya/prevue"
@@ -109,12 +105,15 @@ const Navbar = () => {
           </a>
 
           <div className="hidden lg:block">
-            <Button variant="primary" onClick={scrollToSearch}>
+            <button
+              type="button"
+              onClick={scrollToSearch}
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2 border bg-emerald-600 text-white hover:bg-emerald-700 border-emerald-700 border-b-4 border-b-emerald-800 active:translate-y-0.5 active:border-b-2 shadow-md h-10 px-4 py-2 cursor-pointer"
+            >
               Get Started
-            </Button>
+            </button>
           </div>
 
-          {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex size-10 items-center justify-center rounded-md lg:hidden cursor-pointer hover:bg-neutral-100 transition-colors"
@@ -129,7 +128,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
       <div
         className={`fixed inset-x-0 top-14 sm:top-16 bottom-0 z-40 flex flex-col bg-white transition-all duration-300 ease-out border-t border-neutral-100 lg:hidden ${isOpen
           ? "opacity-100 translate-y-0 pointer-events-auto"
@@ -137,21 +135,19 @@ const Navbar = () => {
           }`}
       >
         <div className="flex flex-1 flex-col overflow-y-auto px-6 py-6">
-          {/* Navigation links inside drawer */}
           <div className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-900 transition-colors hover:bg-emerald-50/50 hover:text-brand-primary block"
+                className="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-900 transition-colors hover:bg-neutral-100 hover:text-neutral-900 block"
               >
                 {link.name}
               </a>
             ))}
           </div>
 
-          {/* Action buttons inside drawer */}
           <div className="mt-auto pt-6 flex flex-col gap-3">
             <div className="mb-2 h-px w-full bg-gradient-to-r from-transparent via-neutral-200 to-transparent"></div>
 
@@ -165,16 +161,16 @@ const Navbar = () => {
               <span>GitHub Repository</span>
             </a>
 
-            <Button
-              variant="primary"
-              className="w-full rounded-xl py-3.5 text-base font-medium"
+            <button
+              type="button"
               onClick={() => {
                 setIsOpen(false);
                 scrollToSearch();
               }}
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-xl text-base font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 gap-2 border bg-emerald-600 text-white hover:bg-emerald-700 border-emerald-700 border-b-4 border-b-emerald-800 active:translate-y-0.5 active:border-b-2 shadow-md w-full py-3 cursor-pointer"
             >
               Get Started
-            </Button>
+            </button>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ const ExtractedImagesGallery = ({
   const getTypeBadge = (type) => {
     switch (type) {
       case "og":
-        return "bg-emerald-500/10 text-emerald-700 border-emerald-300/50";
+        return "bg-neutral-900 text-white border-neutral-700";
       case "twitter":
         return "bg-sky-500/10 text-sky-700 border-sky-300/50";
       case "favicon":
@@ -58,19 +58,16 @@ const ExtractedImagesGallery = ({
                 alt={img.label || `Extracted image ${idx + 1}`}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
-                  // Fallback if image link fails to load
                   e.currentTarget.style.display = "none";
                 }}
               />
 
-              {/* Selection Check Mark Badge */}
               {isSelected && (
                 <div className="absolute top-1.5 right-1.5 z-10 w-5 h-5 rounded-full bg-brand-primary text-white flex items-center justify-center shadow-md">
                   <Check className="w-3 h-3 stroke-[3]" />
                 </div>
               )}
 
-              {/* Overlay with Tag Badge */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex flex-col justify-end p-1.5">
                 <span
                   className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-md border w-max truncate max-w-full backdrop-blur-md ${getTypeBadge(

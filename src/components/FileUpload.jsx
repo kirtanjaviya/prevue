@@ -33,16 +33,17 @@ const FileUpload = ({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
   };
 
+  // Validate and handle file upload
   const handleFile = async (file) => {
     if (!file) return;
 
-    // Validate type
+    // Check file type
     if (!file.type.startsWith("image/")) {
       setError("Please select a valid image file (PNG, JPG, WebP, GIF)");
       return;
     }
 
-    // Validate size
+    // Check size limit
     if (file.size > maxSizeMB * 1024 * 1024) {
       setError(`File size exceeds ${maxSizeMB}MB limit`);
       return;
@@ -52,18 +53,17 @@ const FileUpload = ({
     setFileName(file.name);
     setFileSize(formatFileSize(file.size));
 
-    // Show immediate local preview for smooth instant UI response
+    // Instant local preview
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
     setIsUploading(true);
     setIsCdnHosted(false);
 
-    // Notify parent of local selection immediately
     if (onFileSelect) {
       onFileSelect(file, objectUrl);
     }
 
-    // Upload to ImgBB CDN in background to get permanent public URL
+    // Upload to CDN in background
     try {
       const cdnData = await uploadImageToImgBB(file);
       if (cdnData && cdnData.url) {
@@ -75,7 +75,6 @@ const FileUpload = ({
       }
     } catch (uploadErr) {
       console.warn("CDN upload fallback to local preview:", uploadErr);
-      // Even if CDN fails, local preview stays intact
     } finally {
       setIsUploading(false);
     }
@@ -127,7 +126,6 @@ const FileUpload = ({
 
   return (
     <div className="w-full max-w-full font-sans select-none">
-      {/* Header section */}
       <div className="flex items-center justify-between mb-1.5 px-0.5">
         <div className="flex items-center gap-1.5">
           <ImageIcon className="w-3.5 h-3.5 text-brand-primary" />
@@ -138,7 +136,6 @@ const FileUpload = ({
         </span>
       </div>
 
-      {/* Main Upload Dropzone */}
       <div
         onClick={() => fileInputRef.current?.click()}
         onDragOver={handleDragOver}
@@ -146,10 +143,10 @@ const FileUpload = ({
         onDrop={handleDrop}
         className={`relative group cursor-pointer overflow-hidden rounded-xl border-2 border-dashed transition-all duration-300 ${
           isDragging
-            ? "border-brand-primary bg-emerald-50/60 shadow-[0_0_15px_rgba(5,150,105,0.15)] scale-[1.005]"
+            ? "border-neutral-900 bg-neutral-100 shadow-[0_0_15px_rgba(24,24,27,0.15)] scale-[1.005]"
             : preview
             ? "border-neutral-200 bg-neutral-950"
-            : "border-neutral-200 hover:border-brand-primary/60 bg-gradient-to-b from-neutral-50/80 to-white hover:bg-emerald-50/20 shadow-2xs hover:shadow-sm"
+            : "border-neutral-200 hover:border-neutral-800 bg-gradient-to-b from-neutral-50/80 to-white hover:bg-neutral-100/50 shadow-2xs hover:shadow-sm"
         }`}
       >
         <input
@@ -161,7 +158,6 @@ const FileUpload = ({
         />
 
         {preview ? (
-          /* Uploaded Preview View */
           <div className="relative aspect-[1200/628] w-full overflow-hidden flex items-center justify-center bg-neutral-950">
             <img
               key={preview}
@@ -170,7 +166,6 @@ const FileUpload = ({
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
 
-            {/* CDN Hosting Status Badge at top-left */}
             <div className="absolute top-2 left-2 z-10">
               {isUploading ? (
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-medium bg-black/75 backdrop-blur-md text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/40 shadow-sm">
@@ -178,14 +173,13 @@ const FileUpload = ({
                   <span>Uploading to CDN...</span>
                 </span>
               ) : isCdnHosted ? (
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-medium bg-black/75 backdrop-blur-md text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/40 shadow-sm">
-                  <Check className="w-3 h-3 text-emerald-400" />
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-medium bg-black/75 backdrop-blur-md text-white px-2.5 py-1 rounded-full border border-white/20 shadow-sm">
+                  <Check className="w-3 h-3 text-white" />
                   <span>Hosted on ImgBB CDN</span>
                 </span>
               ) : null}
             </div>
 
-            {/* Hover overlay with action buttons */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-3">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-medium text-white/90 bg-white/10 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/10">
@@ -221,13 +215,12 @@ const FileUpload = ({
             </div>
           </div>
         ) : (
-          /* Empty Dropzone View */
           <div className="aspect-[1200/628] w-full flex flex-col items-center justify-center p-4 text-center">
             <div
               className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 mb-2 ${
                 isDragging
-                  ? "bg-brand-primary text-white scale-110 shadow-md"
-                  : "bg-emerald-50 text-brand-primary group-hover:bg-brand-primary group-hover:text-white group-hover:scale-110"
+                  ? "bg-neutral-900 text-white scale-110 shadow-md"
+                  : "bg-neutral-100 text-neutral-800 group-hover:bg-neutral-900 group-hover:text-white group-hover:scale-110"
               }`}
             >
               <UploadCloud className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
@@ -235,11 +228,11 @@ const FileUpload = ({
 
             <p className="text-xs sm:text-sm font-semibold text-neutral-800 mb-0.5">
               {isDragging ? (
-                <span className="text-brand-primary">Drop image here</span>
+                <span className="text-neutral-900">Drop image here</span>
               ) : (
                 <>
                   Drag & drop, or{" "}
-                  <span className="text-brand-primary underline decoration-brand-primary/40 underline-offset-2 group-hover:decoration-brand-primary">
+                  <span className="text-neutral-900 underline decoration-neutral-400 underline-offset-2 group-hover:decoration-neutral-900">
                     browse
                   </span>
                 </>
@@ -253,7 +246,6 @@ const FileUpload = ({
         )}
       </div>
 
-      {/* Error notification */}
       {error && (
         <div className="mt-2 flex items-center gap-1.5 text-xs text-red-600 bg-red-50 border border-red-200/70 p-2 rounded-lg">
           <AlertCircle className="w-3.5 h-3.5 shrink-0 text-red-500" />

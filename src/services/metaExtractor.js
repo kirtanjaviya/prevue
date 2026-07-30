@@ -1,7 +1,3 @@
-/**
- * Service to extract OG metadata (Title, Description, OG Image) from a website URL.
- */
-
 const resolveUrl = (path, base) => {
   if (!path) return null;
   if (path.startsWith("data:")) return path;
@@ -12,9 +8,7 @@ const resolveUrl = (path, base) => {
   }
 };
 
-/**
- * Parses raw HTML string to extract title, description, and main OG image.
- */
+// Parse HTML content to extract meta tags
 const parseHtmlMetadata = (htmlString, targetUrl) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -29,17 +23,14 @@ const parseHtmlMetadata = (htmlString, targetUrl) => {
     return null;
   };
 
-  // Title
   const title =
     getMeta(["og:title", "twitter:title"]) ||
     doc.querySelector("title")?.textContent?.trim() ||
     "";
 
-  // Description
   const description =
     getMeta(["og:description", "twitter:description", "description"]) || "";
 
-  // OG / Twitter Image
   const rawImage = getMeta([
     "og:image",
     "og:image:url",
@@ -57,9 +48,7 @@ const parseHtmlMetadata = (htmlString, targetUrl) => {
   };
 };
 
-/**
- * Extract Open Graph metadata from target URL.
- */
+// Extract Open Graph metadata from URL
 export const extractWebsiteMetaData = async (targetUrl) => {
   let normalizedUrl = targetUrl.trim();
   if (!/^https?:\/\//i.test(normalizedUrl)) {
@@ -73,7 +62,7 @@ export const extractWebsiteMetaData = async (targetUrl) => {
     imageUrl: null,
   };
 
-  // Strategy 1: Microlink API
+  // Microlink API extraction
   try {
     const microlinkRes = await fetch(
       `https://api.microlink.io?url=${encodeURIComponent(normalizedUrl)}`,
@@ -94,7 +83,7 @@ export const extractWebsiteMetaData = async (targetUrl) => {
     console.warn("Microlink extraction warning:", err);
   }
 
-  // Strategy 2: CORS Proxy HTML Scraper fallback if missing fields
+  // Proxy HTML scraping fallback
   if (!extractedData.title || !extractedData.description || !extractedData.imageUrl) {
     const proxyUrls = [
       `https://corsproxy.io/?${encodeURIComponent(normalizedUrl)}`,
@@ -102,7 +91,6 @@ export const extractWebsiteMetaData = async (targetUrl) => {
     ];
 
     for (const proxyUrl of proxyUrls) {
-      // Stop if we have all data
       if (extractedData.title && extractedData.description && extractedData.imageUrl) break;
 
       try {

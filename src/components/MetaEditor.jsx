@@ -3,9 +3,7 @@ import FileUpload from "./FileUpload";
 import Button from "./Button";
 import { Type, AlignLeft, Code, AlertTriangle } from "lucide-react";
 
-/**
- * Returns SEO status for Title
- */
+// Title SEO score & indicator
 const getTitleSEOStatus = (title = "") => {
   const len = title.trim().length;
   if (len === 0) {
@@ -38,9 +36,7 @@ const getTitleSEOStatus = (title = "") => {
   };
 };
 
-/**
- * Returns SEO status for Description
- */
+// Description SEO score & indicator
 const getDescriptionSEOStatus = (desc = "") => {
   const len = desc.trim().length;
   if (len < 50) {
@@ -82,7 +78,7 @@ const MetaEditor = ({
   onOpenExportModal,
   noImageWarning
 }) => {
-  const { title = "", description = "", imageUrl = null } = metaData;
+  const { title = "", description = "", imageUrl = null } = metaData || {};
 
   const titleSEO = useMemo(() => getTitleSEOStatus(title), [title]);
   const descSEO = useMemo(() => getDescriptionSEOStatus(description), [description]);
@@ -95,97 +91,99 @@ const MetaEditor = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-neutral-200/90 shadow-sm overflow-hidden flex flex-col font-sans lg:h-[560px]">
-      {/* Editor Content Area - Completely Fixed Non-Scrollable Box */}
-      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+    <div className="w-full flex flex-col font-sans">
+      <h2 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">
+        METADATA
+      </h2>
 
-        <div className="space-y-4">
-          {/* 1. File Upload / OG Image View */}
-          <div>
-            <FileUpload
-              initialImage={imageUrl}
-              onFileSelect={(file, objectUrl) => {
-                if (onImageSelect) {
-                  onImageSelect(file, objectUrl);
-                }
-              }}
-            />
-            {noImageWarning && (
-              <div className="mt-3 flex items-start gap-2 p-3 bg-amber-50 border border-amber-200/60 rounded-xl shadow-xs animate-in fade-in slide-in-from-top-2 duration-300">
-                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <p className="text-xs font-semibold text-amber-800 leading-snug">
-                  No Open Graph image was found on this website. Please upload a fallback image above.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* 2. Title Section with SEO Indicator & Tooltip */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5">
-                <label className="text-xs font-semibold text-neutral-900 flex items-center gap-1.5">
-                  <Type className="w-3.5 h-3.5 text-neutral-900" />
-                  Title
-                </label>
-
-                <div className="relative group/tooltip flex items-center">
-                  <span
-                    className={`w-2 h-2 rounded-full ${titleSEO.dotClass} cursor-pointer transition-transform duration-200 hover:scale-125`}
-                  />
-                  <div className="absolute left-0 bottom-full mb-2 hidden group-hover/tooltip:block z-30 pointer-events-none w-max max-w-[280px]">
-                    <div className="bg-neutral-900 text-white text-[11px] leading-snug font-medium px-3 py-1.5 rounded-lg shadow-xl border border-neutral-800">
-                      {titleSEO.explanation}
-                    </div>
-                    <div className="w-2 h-2 bg-neutral-900 rotate-45 -mt-1 ml-1.5 border-r border-b border-neutral-800" />
-                  </div>
-                </div>
-              </div>
+      <div className="space-y-5">
+        <div>
+          <FileUpload
+            initialImage={imageUrl}
+            onFileSelect={(file, objectUrl) => {
+              if (onImageSelect) {
+                onImageSelect(file, objectUrl);
+              }
+            }}
+          />
+          {noImageWarning && (
+            <div className="mt-3 flex items-start gap-2 p-3 bg-amber-50 border border-amber-200/60 rounded-xl shadow-xs animate-in fade-in slide-in-from-top-2 duration-300">
+              <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+              <p className="text-xs font-semibold text-amber-800 leading-snug">
+                No Open Graph image was found on this website. Please upload a fallback image above.
+              </p>
             </div>
-
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => handleInputChange("title", e.target.value)}
-              placeholder="Enter SEO page title..."
-              className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-emerald-500/10 text-neutral-900 font-medium transition-all"
-            />
-          </div>
-
-          {/* 3. Description Section with SEO Indicator & Tooltip */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-1.5">
-                <label className="text-xs font-semibold text-neutral-900 flex items-center gap-1.5">
-                  <AlignLeft className="w-3.5 h-3.5 text-neutral-900" />
-                  Description
-                </label>
-
-                <div className="relative group/tooltip flex items-center">
-                  <span
-                    className={`w-2 h-2 rounded-full ${descSEO.dotClass} cursor-pointer transition-transform duration-200 hover:scale-125`}
-                  />
-                  <div className="absolute left-0 bottom-full mb-2 hidden group-hover/tooltip:block z-30 pointer-events-none w-max max-w-[280px]">
-                    <div className="bg-neutral-900 text-white text-[11px] leading-snug font-medium px-3 py-1.5 rounded-lg shadow-xl border border-neutral-800">
-                      {descSEO.explanation}
-                    </div>
-                    <div className="w-2 h-2 bg-neutral-900 rotate-45 -mt-1 ml-1.5 border-r border-b border-neutral-800" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <textarea
-              rows={2}
-              value={description}
-              onChange={(e) => handleInputChange("description", e.target.value)}
-              placeholder="Enter meta description for search engines and social cards..."
-              className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-emerald-500/10 text-neutral-900 font-normal leading-relaxed transition-all resize-none"
-            />
-          </div>
+          )}
         </div>
 
-        {/* 4. Solid Primary Slide Button */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-semibold text-neutral-900 flex items-center gap-1.5">
+                <Type className="w-3.5 h-3.5 text-neutral-900" />
+                Title
+              </label>
+
+              <div className="relative group/tooltip flex items-center">
+                <span
+                  className={`w-2 h-2 rounded-full ${titleSEO.dotClass} cursor-pointer transition-transform duration-200 hover:scale-125`}
+                />
+                <div className="absolute left-0 bottom-full mb-2 hidden group-hover/tooltip:block z-30 pointer-events-none w-max max-w-[280px]">
+                  <div className="bg-neutral-900 text-white text-[11px] leading-snug font-medium px-3 py-1.5 rounded-lg shadow-xl border border-neutral-800">
+                    {titleSEO.explanation}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <span className="text-[11px] font-mono text-neutral-400">
+              {title.length} chars
+            </span>
+          </div>
+
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => handleInputChange("title", e.target.value)}
+            placeholder="Meta Title"
+            className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/10 text-neutral-900 font-normal leading-normal transition-all"
+          />
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs font-semibold text-neutral-900 flex items-center gap-1.5">
+                <AlignLeft className="w-3.5 h-3.5 text-neutral-900" />
+                Description
+              </label>
+
+              <div className="relative group/tooltip flex items-center">
+                <span
+                  className={`w-2 h-2 rounded-full ${descSEO.dotClass} cursor-pointer transition-transform duration-200 hover:scale-125`}
+                />
+                <div className="absolute left-0 bottom-full mb-2 hidden group-hover/tooltip:block z-30 pointer-events-none w-max max-w-[280px]">
+                  <div className="bg-neutral-900 text-white text-[11px] leading-snug font-medium px-3 py-1.5 rounded-lg shadow-xl border border-neutral-800">
+                    {descSEO.explanation}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <span className="text-[11px] font-mono text-neutral-400">
+              {description.length} chars
+            </span>
+          </div>
+
+          <textarea
+            rows={3}
+            value={description}
+            onChange={(e) => handleInputChange("description", e.target.value)}
+            placeholder="Meta Description"
+            className="w-full px-3.5 py-2 text-xs sm:text-sm bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-neutral-900 focus:ring-2 focus:ring-neutral-900/10 text-neutral-900 font-normal leading-relaxed transition-all resize-none"
+          />
+        </div>
+
         <div className="pt-2">
           <Button
             type="button"
@@ -200,7 +198,6 @@ const MetaEditor = ({
             </span>
           </Button>
         </div>
-
       </div>
     </div>
   );

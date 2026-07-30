@@ -1,14 +1,7 @@
-/**
- * Service to handle image uploads to ImgBB CDN
- */
+// Default ImgBB API key
+const DEFAULT_IMGBB_KEY = "6d700a60d001b9ca9c2bfb1964584183";
 
-const DEFAULT_IMGBB_KEY = "6d700a60d001b9ca9c2bfb1964584183"; // Free public ImgBB API Key fallback
-
-/**
- * Uploads an image File to ImgBB and returns the permanent CDN URL
- * @param {File} file - The image file to upload
- * @returns {Promise<{ url: string, deleteUrl: string }>} Hosted image details
- */
+// Upload image to ImgBB CDN
 export const uploadImageToImgBB = async (file) => {
   if (!file) throw new Error("No image file provided");
 

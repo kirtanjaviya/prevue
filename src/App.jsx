@@ -24,6 +24,7 @@ const App = () => {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [noImageWarning, setNoImageWarning] = useState(false);
 
+  // Fetch metadata for user-submitted URL
   const handleSearch = async (targetUrl) => {
     if (!targetUrl) return;
 
@@ -34,7 +35,7 @@ const App = () => {
     try {
       const data = await extractWebsiteMetaData(targetUrl);
 
-      // Clean up extracted title if API returned just the domain string instead of a real title
+      // Fallback title if API returns domain name
       const domainName = targetUrl.replace(/^https?:\/\//i, "").split("/")[0].replace(/^www\./, "");
       const isDomainOnlyTitle = data.title && data.title.toLowerCase().trim() === domainName.toLowerCase().trim();
       const finalTitle = (data.title && !isDomainOnlyTitle) ? data.title : metaData.title;
@@ -74,15 +75,13 @@ const App = () => {
 
   return (
     <div className="min-h-screen w-full bg-slate-50/50 relative text-gray-800 font-sans">
-      {/* Navigation */}
       <Navbar />
 
-      {/* Hero Header Section */}
       <main className="relative z-10">
         <Hero />
       </main>
 
-      {/* URL Extractor Search Bar */}
+      {/* URL search bar */}
       <OgSearch
         onSearch={handleSearch}
         onUrlChange={handleUrlChange}
@@ -90,12 +89,11 @@ const App = () => {
         externalError={extractionError}
       />
 
-      {/* 2-Column Main Workspace Section */}
-      <section className="mt-10 pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Editor & Preview section */}
+      <section id="editor-section" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-          {/* LEFT SIDE: META Editor Box */}
-          <div className="lg:col-span-5 w-full flex flex-col">
+          <div className="lg:col-span-5 w-full flex flex-col lg:sticky lg:top-24">
             <MetaEditor
               metaData={metaData}
               onChange={setMetaData}
@@ -105,7 +103,6 @@ const App = () => {
             />
           </div>
 
-          {/* RIGHT SIDE: Live Previews Section */}
           <div className="lg:col-span-7 w-full flex flex-col">
             <PreviewSection metaData={metaData} />
           </div>
@@ -113,16 +110,12 @@ const App = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <Features />
 
-      {/* Documentation Section */}
       <DocsSection />
 
-      {/* Footer Section */}
       <Footer />
 
-      {/* HTML Meta Code Generator Modal */}
       <MetaCodeModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}

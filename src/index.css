@@ -16,7 +16,7 @@
 
 @theme {
   --color-brand-primary: #059669;
-  --color-brand-secondary: #34D399;
+  --color-brand-secondary: #047857;
   --font-logo-font: "logo-font", sans-serif;
   --font-hero-font: "hero-font", "Inter", sans-serif;
   --font-manrope: "Manrope", "Inter", system-ui, -apple-system, sans-serif;
@@ -43,7 +43,6 @@ body {
   background-size: 20px 30px;
 }
 
-/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

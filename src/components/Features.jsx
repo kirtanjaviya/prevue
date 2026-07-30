@@ -1,48 +1,95 @@
-import { Code, Edit3, Eye } from "lucide-react";
+import React from "react";
 
 const features = [
   {
-    name: "Edit in real-time",
-    description: "Update your title, description, and images on the fly. No more guessing how your metadata looks.",
-    icon: Edit3,
+    number: "01/",
+    title: "Inspect live links",
+    description: "Fetch existing Open Graph tags, Twitter cards, and favicons from any URL instantly.",
+    cutPosition: "right", // top-right cut
+    bgColor: "bg-[#22242a] hover:bg-[#1a1c21] text-white",
+    numberColor: "text-neutral-500",
+    descColor: "text-neutral-400",
   },
   {
-    name: "Live previews",
-    description: "Instantly visualize how your links will appear across Twitter, LinkedIn, Facebook, and Discord.",
-    icon: Eye,
+    number: "02/",
+    title: "Multi-platform previews",
+    description: "Visualize exact card rendering for X (Twitter), LinkedIn, Facebook, Discord, Slack, and Google Search.",
+    cutPosition: "none", // no cut
+    bgColor: "bg-[#f2f2f5] hover:bg-[#ebebee] text-neutral-900",
+    numberColor: "text-neutral-400",
+    descColor: "text-neutral-500",
   },
   {
-    name: "Instant code generation",
-    description: "Copy production-ready HTML meta tags with a single click and paste them directly into your project.",
-    icon: Code,
+    number: "03/",
+    title: "Clean meta export",
+    description: "Generate production-ready HTML meta tags, Next.js metadata objects, or React code snippets.",
+    cutPosition: "left", // top-left cut
+    bgColor: "bg-[#22242a] hover:bg-[#1a1c21] text-white",
+    numberColor: "text-neutral-500",
+    descColor: "text-neutral-400",
   },
 ];
 
+// SVG masks for smooth, rounded corner cut transitions
+const MASK_TOP_RIGHT = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" preserveAspectRatio="none"><path fill="black" d="M 24 0 H 230 Q 244 0 254 10 L 284 40 Q 296 52 296 66 V 176 Q 296 200 272 200 H 24 Q 0 200 0 176 V 24 Q 0 0 24 0 Z"/></svg>')`;
+
+const MASK_TOP_LEFT = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" preserveAspectRatio="none"><path fill="black" d="M 66 0 H 276 Q 300 0 300 24 V 176 Q 300 200 276 200 H 24 Q 0 200 0 176 V 66 Q 0 52 10 40 L 40 10 Q 50 0 66 0 Z"/></svg>')`;
+
 const Features = () => {
   return (
-    <section id="features" className="py-20 bg-transparent scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-neutral-200/60 pt-20">
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-neutral-900 sm:text-3xl">
-            Features
+    <section id="features" className="py-16 sm:py-20 bg-transparent scroll-mt-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 sm:mb-12">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">
+            FEATURES
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">
+            Designed for precision.
           </h2>
-          <p className="mt-4 text-lg text-neutral-600 max-w-2xl">
-            Prevue provides simple tools to craft the perfect first impression across the web, without writing code manually.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {features.map((feature) => (
-            <div key={feature.name} className="flex flex-col">
-              <div className="w-12 h-12 flex items-center justify-center bg-neutral-100 text-neutral-700 rounded-lg mb-6">
-                <feature.icon className="w-6 h-6" aria-hidden="true" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          {features.map((f) => {
+            let maskStyle = {};
+            if (f.cutPosition === "right") {
+              maskStyle = {
+                WebkitMaskImage: MASK_TOP_RIGHT,
+                maskImage: MASK_TOP_RIGHT,
+                WebkitMaskSize: "100% 100%",
+                maskSize: "100% 100%",
+              };
+            } else if (f.cutPosition === "left") {
+              maskStyle = {
+                WebkitMaskImage: MASK_TOP_LEFT,
+                maskImage: MASK_TOP_LEFT,
+                WebkitMaskSize: "100% 100%",
+                maskSize: "100% 100%",
+              };
+            }
+
+            return (
+              <div
+                key={f.number}
+                style={maskStyle}
+                className={`relative min-h-[160px] sm:min-h-[185px] p-5 sm:p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 ${f.bgColor} cursor-pointer group`}
+              >
+                <div className="flex justify-center">
+                  <span className={`font-mono text-xs sm:text-sm font-semibold tracking-wider ${f.numberColor}`}>
+                    {f.number}
+                  </span>
+                </div>
+
+                <div className="mt-4">
+                  <h3 className="text-base sm:text-lg font-bold mb-1.5 tracking-tight">
+                    {f.title}
+                  </h3>
+                  <p className={`text-xs sm:text-sm leading-relaxed ${f.descColor}`}>
+                    {f.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold text-neutral-900 mb-3">{feature.name}</h3>
-              <p className="text-neutral-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
